@@ -2,17 +2,24 @@ import React, { useState }  from 'react';
 
 const List = (props) => {
   let counter = 0;
+  const todayPeopleBirthday = props.people.filter( (person) => {
+    const {dateOfBirth, fullName, img, __v, _id} = person;
+    let today = new Date().toJSON().substring(5,10);
+    if(dateOfBirth.includes(today)){
+      counter++;
+      return true
+    }
+    else {
+      return false
+    }
+  });
+  props.setNumberPepole(counter);
   return (
     <>
       {
-        props.people.map( (person) => {
+        todayPeopleBirthday.map( (person) => {
         const {dateOfBirth, fullName, img, __v, _id} = person;
-        const age = calcAgeByDate(dateOfBirth);
-        let today = new Date().toJSON().substring(5,10);
-
-        if(dateOfBirth.includes(today)){
-          
-           props.setNumberPepole(++counter);
+        const age = calcAgeByDate(dateOfBirth);  
           return (  
             <article key={_id} className='person'>
               <img src={img} alt={fullName} />
@@ -21,14 +28,12 @@ const List = (props) => {
                 <p>{age} years</p>
               </div>
             </article>
-          );
-          
-        }
-        ;
-        
-      })}
+          );    
+        })
+      }
     </>
   );
+
 
 };
 
