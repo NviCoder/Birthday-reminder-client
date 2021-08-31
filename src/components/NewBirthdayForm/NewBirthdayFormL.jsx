@@ -45,7 +45,7 @@ const NewBirthdayL = () => {
             return;
         }
         setLoading(true);
-        const response = await axios.post('http://localhost:3001/birthday', formData);
+        const response = await axios.post('http://localhost:3001/birthday', formData,{withCredentials: true});
         setLoading(false);
         console.log(response);
         if(response.status != 200){

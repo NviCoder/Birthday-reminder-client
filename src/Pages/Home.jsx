@@ -9,25 +9,37 @@ import useAxios from '../Helper/useAxios';
 const Home = () => {
 
   const [people, setPeople] = useState([]);
-  const { response, loading, error } = useAxios({
-      method: 'get',
-      url: '/birthday',
-  });
+  const [loading,setLoading] = useState(true);
+  const [numOfBirthday,setNumOfBirthday] = useState(0);
 
   useEffect(() => {
     
-    if(response !== null){
-      setPeople(response);
+    const fechData = async() => {
+      try {
+        const response = await axios.get('http://localhost:3001/birthday',{ withCredentials: true });
+        setLoading(false);
+        setPeople(response.data);
+        console.log(response);
+       
+      } catch (error) {
+        console.log(error);
+        return;
+      }
     }
 
-  }, [response]);
+    fechData();
+    
+  }, []);
 
   return (
     <>
     <NavBar/>
     <main>
       <section className='container'>
-        {loading ? <p>loading...</p> : <><h3 style={{textAlign:'center'}}>{people.length} birthdays today</h3><hr/><List people={people} /></>}
+        {loading ? <p>loading...</p> : 
+        <><h3 style={{textAlign:'center'}}>{numOfBirthday} birthdays today</h3><hr/>
+        <List people={people} setNumberPepole={setNumOfBirthday} />
+        </>}
       </section>
       <section className='container2'>
           <h2 className='calendar-headline'>Friends birthday's calendar 🎁</h2>

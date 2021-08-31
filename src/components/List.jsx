@@ -1,25 +1,35 @@
-import React  from 'react';
+import React, { useState }  from 'react';
 
-const List = ({ people }) => {
-
+const List = (props) => {
+  let counter = 0;
   return (
     <>
-      {people.map( (person) => {
+      {
+        props.people.map( (person) => {
         const {dateOfBirth, fullName, img, __v, _id} = person;
         const age = calcAgeByDate(dateOfBirth);
-      
-        return (
-          <article key={_id} className='person'>
-            <img src={img} alt={fullName} />
-            <div>
-              <h4>{fullName}</h4>
-              <p>{age} years</p>
-            </div>
-          </article>
-        );
+        let today = new Date().toJSON().substring(5,10);
+
+        if(dateOfBirth.includes(today)){
+          
+           props.setNumberPepole(++counter);
+          return (  
+            <article key={_id} className='person'>
+              <img src={img} alt={fullName} />
+              <div>
+                <h4>{fullName}</h4>
+                <p>{age} years</p>
+              </div>
+            </article>
+          );
+          
+        }
+        ;
+        
       })}
     </>
   );
+
 };
 
 /**
