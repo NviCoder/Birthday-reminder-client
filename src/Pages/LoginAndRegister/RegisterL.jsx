@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAlert } from "react-alert";
 import { Redirect, useHistory } from "react-router-dom";
 import useAxios from '../../Helper/useAxios';
+import { userSchema } from '../../Validations/UserValidation.';
 
 const initialFormDataReg = Object.freeze({
     name: "",
@@ -10,23 +11,17 @@ const initialFormDataReg = Object.freeze({
     pass:""
   });
 
-const initialFormDataErorrs = Object.freeze({
-Error: "Enter Values",
-});
-
-
 const RegisterL = (props) => {
     
     const [formDataReg, updateFormDataReg] = useState(initialFormDataReg);
     const[loading,setLoading] = useState(false);
-    const[errors,setErrors] = useState(initialFormDataErorrs);
     const alert = useAlert();
     const history = useHistory();
 
 //========================================================================================
     /**
-     * 
-     * @param {*} e 
+     * update the state of the form.
+     * @param {*} e The input that was changed by the user
      */
     const handleChangeReg = (e) => { 
         updateFormDataReg({
@@ -36,23 +31,19 @@ const RegisterL = (props) => {
 
 //========================================================================================
     /**
-     * 
-     * @param {*} e 
-     * @returns 
+     * handle  the register of the form
+     * if the register sucssed the user will be transfer to login page.
      */
     const handleSubmitRegister = async(e) => {
         e.preventDefault()
         console.log(formDataReg);
-        // let isValid = handleValidation();
-        // let errMes ="";
-        // if(!isValid){
-        //   for (const property in errors) {
-        //     errMes = `${property}: ${errors[property]}`;
-        //     alert.error(errMes);
-        //   }
-        //   console.log(errMes);
-        //   return;
-        // }
+       
+        const isValid = await validForm();
+        
+        if(!isValid){
+            return;
+        }
+        
         setLoading(true);
         try {
             const response = await axios.post('http://localhost:3001/users', formDataReg);
@@ -68,6 +59,30 @@ const RegisterL = (props) => {
         document.querySelector("#flipper").classList.toggle("flip");
         document.getElementById("regForm").reset();
 
+    }
+
+ //========================================================================================
+    /**
+     * handle  the Validation of the form using yup libaray 
+     * @returns true if the form valid, false if the form not valid
+     */
+    const validForm = async() =>{
+        let errors="";
+        const isValid = await userSchema.validate(formDataReg).catch( (err) => {
+            console.log("err: ",err); // => 'ValidationError
+            console.log("err.name: ",err.name); // => 'ValidationError'
+            console.log("err.errors: ",err.errors);
+            //alert.error(err.errors);// => ['Deve ser maior que 18']
+            errors = err.errors;
+          });;
+        if(errors==""){
+            return true;
+        }
+        else{
+            alert.error(errors);
+            return false;
+        }
+        
     }
 
     return {handleChangeReg, handleSubmitRegister};
