@@ -15,7 +15,8 @@ const initialFormData = Object.freeze({
   });
 
 
-const NewBirthdayL = () => {
+const NewBirthdayL = (props) => {
+    console.log("New Birthday Logic",props);
     
     const [formData, updateFormData] = useState(initialFormData);
     const[loading,setLoading] = useState(false);
@@ -34,6 +35,8 @@ const NewBirthdayL = () => {
 
     const handleSubmit = async(e) => {
         e.preventDefault()
+        
+        //Validation
         let isValid = handleValidation();
         let errMes ="";
         if(!isValid){
@@ -44,6 +47,13 @@ const NewBirthdayL = () => {
             console.log(errMes);
             return;
         }
+        //Check if this friend already exsist
+        console.log(formData);
+        const isExsist = checkifExsist();
+        if(isExsist){
+            alert.error("This friend already exsist");
+            return;
+        }
         setLoading(true);
         const response = await axios.post('http://localhost:3001/birthday', formData,{withCredentials: true});
         setLoading(false);
@@ -52,8 +62,10 @@ const NewBirthdayL = () => {
             alert.error("You just broke something!");
             return;
         }
+        props.addFriend(preFriends => [...preFriends,formData]);
         alert.success("Friend Added!");
         document.getElementById("formId").reset();
+        props.onClose();
             
         // let newPersons = [...props.persons,
         //   formData];
@@ -89,6 +101,16 @@ const NewBirthdayL = () => {
         setErrors(errors);
         return formIsValid;
     };
+
+    const checkifExsist =() =>{
+        let exsist = false;
+        props.friends.forEach(friend =>{
+            if(friend["fullName"] == formData["fullName"]){
+                exsist = true;
+            }
+        });
+        return exsist;
+    }
     
     return {formData, loading, errors, alert, handleChange, handleSubmit, handleValidation};
        

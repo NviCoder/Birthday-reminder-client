@@ -12,7 +12,7 @@ function Login(props) {
                 <h2 className="title">Login</h2>
                 <form id="loginForm">
                     <label>Email:</label>
-                    <input type="text" name="email" placeholder="Username" onInputCapture={handleChangeLogin} />
+                    <input type="text" name="email" placeholder="Email" onInputCapture={handleChangeLogin} />
                     <label>Password</label>
                     <input type="password" name="pass" placeholder="Password" onInputCapture={handleChangeLogin} />
                     <input type="button" value="Login" onClick={handleSubmitLogin}/>

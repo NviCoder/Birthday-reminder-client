@@ -44,7 +44,7 @@ const Home = () => {
         </>}
       </section>
       <section className='container'>
-        <h3 style={{textAlign:'center'}}>Closest birthday 🔜</h3>
+        <h3 style={{textAlign:'center'}}>The next birthday 🔜</h3>
         <hr/>
         {loading ? <p>loading...</p> : 
         <UpComingBirthday pepole={pepole}/>

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import AddNewFriend from './Pages/AddNewFriend';
 import Home from './Pages/Home';
 import LoginOrRegister from './Pages/LoginAndRegister/LoginOrRegister';
+import Friends from './Pages/Friends/Friends';
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import Protected from './components/Protected';
 
@@ -19,6 +20,7 @@ function App() {
         </Route>
         <Protected path="/home" component={Home} isAuth={isAuth}/>
         <Protected path="/add-new-friend" component={AddNewFriend} isAuth={isAuth}/>
+        <Protected path="/friends" component={Friends} isAuth={isAuth}/>
       </Switch>
     </Router>
   )
