@@ -28,7 +28,7 @@ const CCalendar = ({pepole}) => {
         
         const {dateOfBirth, fullName, img, __v, _id} = person;
         let _date = "2021-"+dateOfBirth.substring(5,7)+"-"+dateOfBirth.substring(8,10);
-        let _title =fullName+"'s Birthday";
+        let _title =fullName+" 🎈";
         newEvents.push({title:_title, date:_date })
         
       });

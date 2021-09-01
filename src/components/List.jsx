@@ -2,7 +2,7 @@ import React, { useState }  from 'react';
 
 const List = (props) => {
   let counter = 0;
-  const todayPeopleBirthday = props.people.filter( (person) => {
+  const todayPepoleBirthday = props.pepole.filter( (person) => {
     const {dateOfBirth, fullName, img, __v, _id} = person;
     let today = new Date().toJSON().substring(5,10);
     if(dateOfBirth.includes(today)){
@@ -17,7 +17,7 @@ const List = (props) => {
   return (
     <>
       {
-        todayPeopleBirthday.map( (person) => {
+        todayPepoleBirthday.map( (person) => {
         const {dateOfBirth, fullName, img, __v, _id} = person;
         const age = calcAgeByDate(dateOfBirth);  
           return (  
