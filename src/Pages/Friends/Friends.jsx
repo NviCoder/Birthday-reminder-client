@@ -5,6 +5,8 @@ import {withRouter} from 'react-router-dom';
 import Dialog from '../../components/Dialog';
 import NewBirthdayForm from '../../components/NewBirthdayForm/NewBirthdayForm';
 import DeleteFriend from '../../components/DeleteFriend';
+import UpdateFriend from '../../components/UpdateFriend/UpdateFriend';
+
 
 const Friends =() => {
 
@@ -12,8 +14,10 @@ const Friends =() => {
     const [friends, setFriends] = useState([]);
     const[delFriend,setDelFriend] = useState('');
     const [loading,setLoading] = useState(true);
-    const [isOpen, setIsOpen] = useState(false)
-    const [isOpenDel, setIsOpenDel] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenDel, setIsOpenDel] = useState(false);
+    const [isOpenUpdate, setIsOpenUpdate] = useState(false);
+    const [updateFriend, setUpdateFriend] = useState([]);
 
     useEffect(() => {
     
@@ -38,6 +42,18 @@ const Friends =() => {
         setIsOpenDel(true);
         let friendNameToBeDeleted = e.target.value;
         setDelFriend(friendNameToBeDeleted);
+    
+    }
+
+    const startUpdateFriend =(e) =>{
+        
+        setIsOpenUpdate(true);
+        let friendNameToBeUpdate = e.target.value;
+        console.log("User Id Update: ",friendNameToBeUpdate);
+        let birthdayFilterd = friends.filter(friend => friend["_id"] == friendNameToBeUpdate);
+        setUpdateFriend(birthdayFilterd);
+        console.log("User filtered: ",birthdayFilterd);
+
     
     }
 
@@ -66,6 +82,14 @@ const Friends =() => {
                                  friends={friends}
                 />
             </Dialog>
+            <Dialog open={isOpenUpdate}>
+                <UpdateFriend updateFriendsList={(pepole) =>{setFriends(pepole)}}
+                                 onClose={() => setIsOpenUpdate(false)}
+                                 updateFriend={updateFriend}
+                                 friends={friends}
+                                 
+                />
+            </Dialog>
           </div>
           
           {
@@ -79,7 +103,7 @@ const Friends =() => {
                         <h4>{fullName}</h4>
                         <p>{dateOfBirth.substring(0,10)}</p>
                         <div style={{marginRight:'auto'}}>
-                            <button>Edit</button>
+                            <button value={_id} onClick={(e) => startUpdateFriend(e)}>Update</button>
                             <button value={_id} onClick={(e) => startDelFriend(e)}>Delete</button>
                         </div>
                     </div>

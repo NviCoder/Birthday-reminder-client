@@ -5,7 +5,7 @@ import NewBirthdayL from './NewBirthdayFormL';
 
 const NewBirthdayForm = (props) => {
   
-  const { loading, handleChange, handleSubmit} = NewBirthdayL(props);
+  const { loading, handleChange, handleSubmit} = NewBirthdayL(props);//Custom hook for component logic
 
   console.log(props);
   return (
